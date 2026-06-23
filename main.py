@@ -24,5 +24,5 @@ def health():
 @trace(name="ask")
 def ask(data: Question):
     return {
-        "answer": f"You asked: {data. Question}"
+        "answer": f"You asked: {data. question}"
     }
