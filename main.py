@@ -6,12 +6,8 @@ from agentrix_sdk import Agentrix, trace
 agent = Agentrix(
     pat="rx_pat_502ed200-0223-4ced-9654-5c122e449066.zSsEPIh_m7seFcUFhtMOcrJ7dM6ucBFHq65h3vZMlSiQ1_Ivw4gGHqwNNQLJqWWW",
     project_id="prj-ff7218fe",
-    agent_id="check-health")
+    agent_id="check-health1")
 agent.get_tracing_config()
-
-@trace(name="process_query")
-def handle_query(query: str) -> str:
-    return f"You asked: {query}"
 
 app = FastAPI()
 
@@ -19,12 +15,13 @@ class Question(BaseModel):
     question: str
 
 @app.get("/health")
+@trace(name="health_check")
 def health():
     return {"status": "OK"}
 
 @app.post("/ask")
+@trace(name="ask")
 def ask(data: Question):
-    answer = handle_query(data.question)
     return {
-        "answer": answer
+        "answer": f"You asked: {data.question}"
     }
